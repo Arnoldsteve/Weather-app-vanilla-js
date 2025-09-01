@@ -8,7 +8,17 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <!-- This will be our main container for the weather information -->
+    <!-- Search bar -->
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search city or location..."
+      />
+      <button class="search-btn">Search</button>
+    </div>
+
+    <!-- Weather Card -->
     <div class="main-weather-card">
       <div class="location">
         <h1 class="location-timezone">Zone</h1>
@@ -42,7 +52,7 @@
       </div>
     </div>
 
-    <!-- This will be our dynamic background container -->
+    <!-- Background -->
     <div class="background-container"></div>
 
     <script src="app.js"></script>
