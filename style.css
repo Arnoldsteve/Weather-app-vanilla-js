@@ -8,62 +8,216 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
-  flex-direction: column;
   align-items: center;
-  font-family: sans-serif;
-  background-image: url("images/SaTechs-logo.png");
-  background-size: cover;
-  backdrop-filter: blur(5px);
-
-  color: black;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #ffffff;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
-.location .container-border {
+/* Dynamic Background Container */
+.background-container {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* width: 300px; */
-  /* height: 200px; */
-  /* background-color: rgba(255, 255, 255, 0.8); */
-  backdrop-filter: blur(20px);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+  filter: brightness(0.3) blur(1px);
+  transition: background-image 1s ease-in-out;
 }
 
-.container-border {
-  border: 1px solid;
-  padding: 10px;
-  box-shadow: 3.5px 5px white;
+/* Animated particles background */
+.background-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+    radial-gradient(2px 2px at 160px 30px, #ffffff, transparent);
+  background-repeat: repeat;
+  background-size: 200px 100px;
+  animation: sparkle 20s linear infinite;
+  opacity: 0.6;
 }
 
+@keyframes sparkle {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-100px); }
+}
+
+/* Main Weather Card Styling */
+.main-weather-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-radius: 24px;
+  padding: 40px 35px;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 380px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.main-weather-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+}
+
+/* Location Section */
 .location {
-  margin-top: 25px;
-  margin-bottom: 25px;
+  margin-bottom: 35px;
 }
 
-.location,
-.temprature {
-  height: 30vh;
-  width: 50%;
+.location-timezone {
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 20px;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.weather-icon-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  margin-bottom: 5px;
+}
+
+.weather-icon-image {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+}
+
+/* Temperature Section */
+.temprature {
+  text-align: center;
 }
 
 .degree-section {
   display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.degree-section span {
-  font-size: 30px;
-}
-
-.degree-section h2 {
-  font-size: 40px;
-}
-.temprature .degree-section .temprature-unit {
-  font-weight: 100;
-  font-size: 20px;
+  justify-content: center;
+  align-items: baseline;
   margin-bottom: 25px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.degree-section:hover {
+  transform: scale(1.02);
+}
+
+.temprature-degree {
+  font-size: 5.5rem;
+  font-weight: 200;
+  line-height: 1;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.temprature-unit {
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: #ffffff;
+  opacity: 0.8;
+  margin-left: 8px;
+}
+
+.temprature-description {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 25px;
+  font-weight: 400;
+  text-transform: capitalize;
+  opacity: 0.9;
+}
+
+.details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 400;
+}
+
+.detail-label {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+}
+
+.detail-value {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Legacy class support for your JS */
+.gust-description {
+  /* Inherits styles from .detail-value */
+}
+
+.humidity-description {
+  /* Inherits styles from .detail-value */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .main-weather-card {
+    width: 90%;
+    padding: 30px 25px;
+  }
+  
+  .location-timezone {
+    font-size: 1.2rem;
+  }
+  
+  .temprature-degree {
+    font-size: 4.5rem;
+  }
+  
+  .temprature-unit {
+    font-size: 1.8rem;
+  }
+  
+  .weather-icon-image {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .details-section {
+    gap: 10px;
+  }
+  
+  .detail-item {
+    font-size: 0.9rem;
+  }
 }

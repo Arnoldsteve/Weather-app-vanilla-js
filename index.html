@@ -8,27 +8,42 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="location container-border">
-      <h1 class="location-timezone">Zone</h1>
-      <img
-        class="weather-icon-image"
-        src="../weather/64X64/night/119.png"
-        alt=""
-      />
-    </div>
-
-    <div class="temprature container-border">
-      <div class="degree-section">
-        <h2 class="temprature-degree">33</h2>
-        <span class="temprature-unit">°C</span>
+    <!-- This will be our main container for the weather information -->
+    <div class="main-weather-card">
+      <div class="location">
+        <h1 class="location-timezone">Zone</h1>
+        <div class="weather-icon-container">
+          <img
+            class="weather-icon-image"
+            src="../weather/64X64/night/119.png"
+            alt="Weather Icon"
+          />
+        </div>
       </div>
 
-      <div>
+      <div class="temprature">
+        <div class="degree-section">
+          <h2 class="temprature-degree">33</h2>
+          <span class="temprature-unit">°C</span>
+        </div>
+
         <div class="temprature-description">Overcast</div>
-        <div class="gust-description">15km/p</div>
-        <div class="humidity-description">60%</div>
+
+        <div class="details-section">
+          <div class="detail-item">
+            <span class="detail-label">Wind Gusts</span>
+            <span class="detail-value gust-description">15km/h</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Humidity</span>
+            <span class="detail-value humidity-description">60%</span>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- This will be our dynamic background container -->
+    <div class="background-container"></div>
 
     <script src="app.js"></script>
   </body>

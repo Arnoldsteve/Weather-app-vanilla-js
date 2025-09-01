@@ -85,7 +85,7 @@ const renderView = (
       tempratureUnit.textContent = "°F";
       tempratureDegree.textContent = temp_f;
     } else {
-      tempratureUnit.textContent = "°F";
+      tempratureUnit.textContent = "°C";
       tempratureDegree.textContent = temp_c;
     }
   });
