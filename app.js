@@ -18,13 +18,11 @@ window.addEventListener("load", () => {
       long = position.coords.longitude;
       lat = position.coords.latitude;
       const locationQuery = lat + "," + long;
-      //   const locationQuery = "nairobi";   -> You may do this to develop a weather app query
 
       const weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${WEATHER_API_KEY}&q=${locationQuery}`;
 
       fetch(weatherUrl)
         .then((res) => res.json())
-
         .then((data) => {
           const {
             temp_c,
@@ -32,16 +30,13 @@ window.addEventListener("load", () => {
             gust_kph,
             humidity,
             condition: { text: weatherText, icon },
+            is_day,
           } = data.current;
 
-          console.log(data);
+          const { name, country } = data.location;
           const iconPath = icon.replace("//cdn.weatherapi.com", ".");
 
-          const { name, country } = data.location;
-
-          console.log(temp_c, temp_f, weatherText);
-
-          //   render view
+          // Render UI
           renderView(
             temp_c,
             temp_f,
@@ -50,12 +45,13 @@ window.addEventListener("load", () => {
             weatherText,
             iconPath,
             name,
-            country
+            country,
+            is_day
           );
         });
     });
   } else {
-    alert("Location permition denied, Please troubleshoot5");
+    alert("Location permission denied. Please enable location access.");
   }
 });
 
@@ -67,17 +63,21 @@ const renderView = (
   weatherText,
   iconPath,
   name,
-  country
+  country,
+  is_day
 ) => {
   tempratureDegree.textContent = temp_c;
   tempratureUnit.textContent = "°C";
   tempratureDescription.textContent = weatherText;
-  gustDescription.textContent = gust_kph + "Km/h";
+  gustDescription.textContent = gust_kph + " Km/h";
   humidityDescription.textContent = humidity + "%";
   locationTimezone.textContent = `${name}, ${country}`;
   weatherIconImage.src = iconPath;
 
-  //   Change weather unit on click
+  // Change background depending on weather + day/night
+  setDynamicBackground(weatherText, is_day);
+
+  // Change weather unit on click
   degreeSection.addEventListener("click", () => {
     let unit = tempratureUnit.textContent.slice(1);
 
@@ -89,4 +89,42 @@ const renderView = (
       tempratureDegree.textContent = temp_c;
     }
   });
+};
+
+const setDynamicBackground = (condition, is_day) => {
+  const backgroundContainer = document.querySelector(".background-container");
+
+  const weather = condition.toLowerCase();
+  let imageUrl = "";
+
+  if (weather.includes("sun") || weather.includes("clear")) {
+    imageUrl = is_day
+      ? "https://images.unsplash.com/photo-1501973801540-537f08ccae7b?auto=format&fit=crop&w=2000&q=80"
+      : "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=2000&q=80";
+  } else if (weather.includes("cloud")) {
+    imageUrl =
+      "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=2000&q=80";
+  } else if (weather.includes("rain")) {
+    imageUrl =
+      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=80";
+  } else if (weather.includes("snow")) {
+    imageUrl =
+      "https://images.unsplash.com/photo-1608889175123-6d958a11a2e2?auto=format&fit=crop&w=2000&q=80";
+  } else if (weather.includes("storm") || weather.includes("thunder")) {
+    imageUrl =
+      "https://images.unsplash.com/photo-1500673922987-e212871fec22?auto=format&fit=crop&w=2000&q=80";
+  } else if (
+    weather.includes("fog") ||
+    weather.includes("mist") ||
+    weather.includes("haze")
+  ) {
+    imageUrl =
+      "https://images.unsplash.com/photo-1485217988980-11786ced9454?auto=format&fit=crop&w=2000&q=80";
+  } else {
+    // Default fallback
+    imageUrl =
+      "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=2000&q=80";
+  }
+
+  backgroundContainer.style.backgroundImage = `url('${imageUrl}')`;
 };

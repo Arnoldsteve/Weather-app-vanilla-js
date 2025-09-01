@@ -24,7 +24,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover;
+  background: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=2000&q=80') center/cover;
   filter: brightness(0.3) blur(1px);
   transition: background-image 1s ease-in-out;
 }
@@ -178,15 +178,6 @@ body {
 .detail-value {
   font-weight: 500;
   font-size: 1rem;
-}
-
-/* Legacy class support for your JS */
-.gust-description {
-  /* Inherits styles from .detail-value */
-}
-
-.humidity-description {
-  /* Inherits styles from .detail-value */
 }
 
 /* Responsive adjustments */
