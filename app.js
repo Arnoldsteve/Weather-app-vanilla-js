@@ -11,6 +11,10 @@ const searchInput = document.querySelector(".search-input");
 const searchBtn = document.querySelector(".search-btn");
 
 const WEATHER_API_KEY = "e06ae411e2964cf18c2105601230707";
+const UNSPLASH_ACCESS_KEY = "CKo2WUbWk3JRrkZhtkN-ViIwX6uQgxS0nmYAMhOvwME"; 
+
+// Cache for storing fetched background images
+const backgroundCache = {};
 
 // ========== Fetch Weather Function ==========
 const fetchWeather = (query) => {
@@ -102,8 +106,8 @@ const renderView = (
   locationTimezone.textContent = `${name}, ${country}`;
   weatherIconImage.src = iconPath;
 
-  // Change background depending on weather + day/night
-  setDynamicBackground(weatherText, is_day);
+  // Set location-specific background first, fallback to weather-based
+  setLocationBackground(name, country, weatherText, is_day);
 
   // Toggle unit
   degreeSection.onclick = () => {
@@ -119,7 +123,69 @@ const renderView = (
   };
 };
 
-// ========== Background ==========
+// ========== Location Background Function ==========
+const setLocationBackground = async (cityName, country, weatherCondition, is_day) => {
+  const backgroundContainer = document.querySelector(".background-container");
+  const cacheKey = `${cityName}_${country}`.toLowerCase();
+
+  // Check cache first
+  if (backgroundCache[cacheKey]) {
+    backgroundContainer.style.backgroundImage = `url('${backgroundCache[cacheKey]}')`;
+    return;
+  }
+
+  // Set weather-based background immediately as fallback
+  setDynamicBackground(weatherCondition, is_day);
+
+  // Try to get location-specific background
+  try {
+    const locationImage = await fetchLocationImage(cityName, country);
+    if (locationImage) {
+      backgroundCache[cacheKey] = locationImage;
+      backgroundContainer.style.backgroundImage = `url('${locationImage}')`;
+    }
+  } catch (error) {
+    console.log("Location image fetch failed, using weather-based background");
+    // Weather-based background is already set above
+  }
+};
+
+// ========== Fetch Location Image from Unsplash ==========
+const fetchLocationImage = async (cityName, country) => {
+  if (!UNSPLASH_ACCESS_KEY || UNSPLASH_ACCESS_KEY === "CKo2WUbWk3JRrkZhtkN-ViIwX6uQgxS0nmYAMhOvwME") {
+    console.log("Unsplash API key not configured, using weather-based backgrounds");
+    return null;
+  }
+
+  const queries = [
+    `${cityName} landmark`,
+    `${cityName} city skyline`,
+    `${cityName} ${country}`,
+    `${country} landscape`
+  ];
+
+  for (const query of queries) {
+    try {
+      const response = await fetch(
+        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&per_page=1&orientation=landscape&client_id=${UNSPLASH_ACCESS_KEY}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.results && data.results.length > 0) {
+          return data.results[0].urls.regular;
+        }
+      }
+    } catch (error) {
+      console.log(`Failed to fetch image for query: ${query}`);
+      continue;
+    }
+  }
+
+  return null; // No image found
+};
+
+// ========== Original Weather-based Background (Fallback) ==========
 const setDynamicBackground = (condition, is_day) => {
   const backgroundContainer = document.querySelector(".background-container");
 

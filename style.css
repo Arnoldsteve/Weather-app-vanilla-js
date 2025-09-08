@@ -16,15 +16,16 @@ body {
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
 }
 
-/* Dynamic Background Container */
 .background-container {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   z-index: -1;
-  background: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=2000&q=80') center/cover;
+  background-image: url('https://images.unsplash.com/photo-1519904981063-b0cf448d479e?auto=format&fit=crop&w=2000&q=80');
+  background-position: center;
+  background-size: cover;
   filter: brightness(0.3) blur(1px);
   transition: background-image 1s ease-in-out;
 }
